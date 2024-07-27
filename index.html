@@ -343,6 +343,8 @@ function reOrderRealItems() {
           let currentArrayIndex = 0; 
           
           
+        
+
 
          function realTestEnterKeys(event) {
     let inputs = inputArrays[currentArrayIndex];
@@ -357,11 +359,12 @@ function reOrderRealItems() {
                         prevElement.focus();
                     } else {
                         console.error(`Element with ID ${inputs[currentIndex - 1]} not found`);
-                    }
+                    }    
                 }
             } else {
-                if (currentIndex === 8) {
-                    currentArrayIndexx = currentArrayIndex;
+                if (currentIndex === 8 && inputUser[8]){
+
+                                 currentArrayIndexx = currentArrayIndex;
 
                     displayScaledScore();
                     reOrderRealItems();
@@ -419,6 +422,7 @@ const correctValuess = {
         let timer;
         let secondsRemaining = 120;
         let isTimerRunning = false;
+        let inputUser = []
 
         function validateInputt(event) {
             if (!isTimerRunning) {
@@ -433,14 +437,16 @@ const correctValuess = {
             const input = event.target;
             const inputId = input.id;
             const value = input.value;
-
+            inputUser.push(value);
+            console.log(inputUser);
+console.log(value);
             if (inputId in correctValuess) {
                 if (value === correctValuess[inputId]) {
                     console.log(`${inputId} is correct`);
                     score++;
                 } else {
                     console.log(`${inputId} is incorrect`);
-                    score--;
+                    score;
                 }
             }
 
@@ -494,6 +500,7 @@ const correctValuess = {
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('input', validateInputt);
                 input.setAttribute('autocomplete', 'off');
+
             });
 
             startTimer();
