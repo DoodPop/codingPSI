@@ -180,16 +180,25 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('practice').addEventListener('click', enableInput);
         });
         function setupEventListeners() {
-            const inputIds = Object.keys(correctValues);
-            inputIds.forEach(id => {
-                const inputElement = document.getElementById(id);
-                if (inputElement) {
-                    inputElement.addEventListener('input', validateInput);
-                    inputElement.addEventListener('keydown', handleEnterKey);
-                    inputElement.addEventListener('input', handleEnterKey);
-                }
-            });
+    const inputIds = Object.keys(correctValues);
+    inputIds.forEach(id => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.addEventListener('input', validateInput);
+            inputElement.addEventListener('keydown', handleEnterKey);
+            inputElement.addEventListener('input', handleEnterKey);
         }
+    });
+
+    removeAutocompletion();
+}
+
+function removeAutocompletion() {
+    document.querySelectorAll('input').forEach(input => {
+        input.setAttribute('autocomplete', 'off');
+    });
+}
+
 
         function removeEventListeners() {
             const inputIds = Object.keys(correctValues);
@@ -220,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                 if (currentIndex === inputs.length - 1) {
-                    generateButton(); // Call the generateButton function
+                    generateButton(); 
                     const nextArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
                     const nextInputs = inputArrays[nextArrayIndex];
                     const firstNextElement = document.getElementById(nextInputs[0]);
