@@ -425,6 +425,7 @@ const correctValuess = {
                 console.log('Scoring is stopped as the timer has ended.');
                 document.querySelectorAll('input').forEach(input => {
                     input.removeEventListener('input', validateInputt);
+                    input.classList.add('invisible')
                 });
                 return;
             }
