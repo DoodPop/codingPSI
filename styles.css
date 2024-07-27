@@ -1,0 +1,56 @@
+.invisible{
+    display: none;
+}
+.visible{
+    display: block;
+}
+.input{
+    
+    width: 35px;
+
+}
+
+.item{
+background-color: black;
+width: auto;
+height: auto;
+}
+
+.itemlist{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 10px; 
+    border: 1px solid black;
+}
+.boxes{
+    display: flex;
+        flex-direction: column;
+        align-items: center;
+     
+}
+.center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.centoot{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.fade-out {
+    animation: fadeOut 3s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  
