@@ -6,7 +6,7 @@
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
-    <script src='logic.js'></script>
+
 </head>
 <body>
 <title>PSI Coding test</title>
@@ -123,7 +123,7 @@ function realShit() {
 
     shitass.classList.add('invisible')
    
-    shitass.classList.remove('boxes')
+    shitass.classList('boxes')
 }
 
 document.getElementById('poop').addEventListener('click', realShit);
@@ -140,6 +140,9 @@ document.getElementById('poop').addEventListener('click', realShit);
             'ans8': '8',
             'ans9': '9'
         };
+
+       
+    
 
         function validateInput(event) {
             const input = event.target;
@@ -329,47 +332,38 @@ function reOrderRealItems() {
     let inputs = inputArrays[currentArrayIndex];
     let currentIndex = inputs.indexOf(event.target.id);
 
-    if (event.key === 'Enter') {
-        event.preventDefault();
-
-        if (currentIndex >= 0) {
-            if (currentIndex === 8) {
-                currentArrayIndexx = currentArrayIndex;
-             
-               
-                reOrderRealItems();
-                clearInputs();
-                currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
-                inputs = inputArrays[currentArrayIndex];
-                
-                const nextElement = document.getElementById(inputs[0]);
-                if (nextElement) {
-                    nextElement.focus();
-                } else {
-                    console.error(`Element with ID ${inputs[0]} not found`);
-                }
+    if (currentIndex >= 0) {
+        // Move focus to the next input field
+        if (currentIndex < inputs.length - 1) {
+            const nextElement = document.getElementById(inputs[currentIndex + 1]);
+            if (nextElement) {
+                nextElement.focus();
             } else {
-                if (currentIndex < inputs.length - 1) {
-                    const nextElement = document.getElementById(inputs[currentIndex + 1]);
-                    if (nextElement) {
-                        nextElement.focus();
-                    } else {
-                        console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
-                    }
-                }
+                console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
             }
-        }
-    } else if (event.key === 'Backspace' && event.target.value === '') {
-        if (currentIndex > 0) {
-            const prevElement = document.getElementById(inputs[currentIndex - 1]);
-            if (prevElement) {
-                prevElement.focus();
+        } else {
+            // If it's the last input, move to the next array
+            currentArrayIndexx = currentArrayIndex;
+            reOrderRealItems();
+            clearInputs();
+            currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
+            inputs = inputArrays[currentArrayIndex];
+            
+            const nextElement = document.getElementById(inputs[0]);
+            if (nextElement) {
+                nextElement.focus();
             } else {
-                console.error(`Element with ID ${inputs[currentIndex - 1]} not found`);
+                console.error(`Element with ID ${inputs[0]} not found`);
             }
         }
     }
 }
+
+// Attach the event listener to all inputs
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', realTestEnterKeys);
+});
+
 
 document.addEventListener('DOMContentLoaded', function() {
     function enableInputReal() {
@@ -396,27 +390,26 @@ const correctValuess = {
 };
 
 let score = 0;
-let inputStatus = {}; 
 
 function validateInputt(event) {
     if (!isTimerRunning) {
         console.log('Scoring is stopped as the timer has ended.');
         return;
     }
-    
+}
+
+function validateInputt(event) {
     const input = event.target;
     const inputId = input.id;
     const value = input.value;
 
     if (inputId in correctValuess) {
-        if (value === correctValuess[inputId] && inputStatus[inputId] !== 'correct') {
+        if (value === correctValuess[inputId]) {
             console.log(`${inputId} is correct`);
             score++;
-            inputStatus[inputId] = 'correct';
-        } else if (value !== correctValuess[inputId] && inputStatus[inputId] === 'correct') {
+        } else {
             console.log(`${inputId} is incorrect`);
             score--;
-            inputStatus[inputId] = 'incorrect';
         }
     }
 
@@ -439,6 +432,7 @@ function startValidation() {
 }
 
 document.getElementById('poop').addEventListener('click', startValidation);
+
 
 
 let timer;
