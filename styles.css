@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+*{
+    font-family: montserrat, sans-serif;
+}
 .invisible{
     display: none;
 }
@@ -5,11 +10,31 @@
     display: block;
 }
 .input{
-    
+    outline: none;
     width: 35px;
 
 }
+#practice {
+    background-color: #131a22;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#practice:hover {
+    background-color: #067dfce1;
+    transform: scale(1.01);
+    font-size: 17px;
+}
+
+#answer{
+    border-radius: 5px;
+}
 .item{
 background-color: black;
 width: auto;
@@ -23,6 +48,7 @@ height: auto;
     gap: 5px;
     padding: 10px; 
     border: 1px solid black;
+    border-radius: 5px;
 }
 .boxes{
     display: flex;
