@@ -332,38 +332,47 @@ function reOrderRealItems() {
     let inputs = inputArrays[currentArrayIndex];
     let currentIndex = inputs.indexOf(event.target.id);
 
-    if (currentIndex >= 0) {
-        // Move focus to the next input field
-        if (currentIndex < inputs.length - 1) {
-            const nextElement = document.getElementById(inputs[currentIndex + 1]);
-            if (nextElement) {
-                nextElement.focus();
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        if (currentIndex >= 0) {
+            if (currentIndex === 8) {
+                currentArrayIndexx = currentArrayIndex;
+             
+               
+                reOrderRealItems();
+                clearInputs();
+                currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
+                inputs = inputArrays[currentArrayIndex];
+                
+                const nextElement = document.getElementById(inputs[0]);
+                if (nextElement) {
+                    nextElement.focus();
+                } else {
+                    console.error(`Element with ID ${inputs[0]} not found`);
+                }
             } else {
-                console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
+                if (currentIndex < inputs.length - 1) {
+                    const nextElement = document.getElementById(inputs[currentIndex + 1]);
+                    if (nextElement) {
+                        nextElement.focus();
+                    } else {
+                        console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
+                    }
+                }
             }
-        } else {
-            // If it's the last input, move to the next array
-            currentArrayIndexx = currentArrayIndex;
-            reOrderRealItems();
-            clearInputs();
-            currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
-            inputs = inputArrays[currentArrayIndex];
-            
-            const nextElement = document.getElementById(inputs[0]);
-            if (nextElement) {
-                nextElement.focus();
+        }
+    } else if (event.key === 'Backspace' && event.target.value === '') {
+        if (currentIndex > 0) {
+            const prevElement = document.getElementById(inputs[currentIndex - 1]);
+            if (prevElement) {
+                prevElement.focus();
             } else {
-                console.error(`Element with ID ${inputs[0]} not found`);
+                console.error(`Element with ID ${inputs[currentIndex - 1]} not found`);
             }
         }
     }
 }
-
-// Attach the event listener to all inputs
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', realTestEnterKeys);
-});
-
 
 document.addEventListener('DOMContentLoaded', function() {
     function enableInputReal() {
