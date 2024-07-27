@@ -186,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (inputElement) {
                     inputElement.addEventListener('input', validateInput);
                     inputElement.addEventListener('keydown', handleEnterKey);
+                    inputElement.addEventListener('input', handleEnterKey);
                 }
             });
         }
@@ -197,39 +198,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (inputElement) {
                     inputElement.removeEventListener('input', validateInput);
                     inputElement.removeEventListener('keydown', handleEnterKey);
-                    inputElement.addEventListener('keydown',realTestEnterKeys )
+                    inputElement.removeEventListener('input', handleEnterKey);
+                    inputElement.addEventListener('input', realTestEnterKeys);
+                    inputElement.addEventListener('keydown', realTestEnterKeys);
                 }
             });
         }
 
         function handleEnterKey() {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                const inputs = ['ans3', 'ans2', 'ans1', 'ans5', 'ans6', 'ans7', 'ans4', 'ans8', 'ans9'];
-                const currentIndex = inputs.indexOf(event.target.id);
+            const inputs = ['ans3', 'ans2', 'ans1', 'ans5', 'ans6', 'ans7', 'ans4', 'ans8', 'ans9'];
+    const currentIndex = inputs.indexOf(event.target.id);
 
-                if (currentIndex >= 0) {
-                    if (currentIndex === 8) {
-                        generateButton();
+    if (event.type === 'input' || event.key === 'Backspace') {
+        if (currentIndex >= 0) {
+            if (event.key === 'Backspace' && event.target.value === '') {
+                if (currentIndex > 0) {
+                    const prevElement = document.getElementById(inputs[currentIndex - 1]);
+                    if (prevElement) {
+                        prevElement.focus();
                     }
-
-                    if (currentIndex < inputs.length - 1) {
-                        document.getElementById(inputs[currentIndex + 1]).focus();
+                }
+            } else {
+                if (currentIndex === inputs.length - 1) {
+                    generateButton(); // Call the generateButton function
+                    const nextArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
+                    const nextInputs = inputArrays[nextArrayIndex];
+                    const firstNextElement = document.getElementById(nextInputs[0]);
+                    if (firstNextElement) {
+                        firstNextElement.focus();
+                    }
+                } else if (currentIndex < inputs.length - 1) {
+                    const nextElement = document.getElementById(inputs[currentIndex + 1]);
+                    if (nextElement) {
+                        nextElement.focus();
                     }
                 }
             }
-            else if (event.key === 'Backspace' && event.target.value === '') {
-                    var inputs = ['ans3', 'ans2', 'ans1', 'ans5', 'ans6', 'ans7', 'ans4', 'ans8', 'ans9'];
-                const currentIndex = inputs.indexOf(event.target.id);
-
-        if (currentIndex > 0) {
-            document.getElementById(inputs[currentIndex - 1]).focus();
-        }
-            
-        
         }
     }
-
+}
         function generateButton() {
             const btn = document.querySelector('.start');
             btn.classList.remove('invisible');
@@ -328,51 +335,52 @@ function reOrderRealItems() {
           
           
 
-          function realTestEnterKeys(event) {
+         function realTestEnterKeys(event) {
     let inputs = inputArrays[currentArrayIndex];
     let currentIndex = inputs.indexOf(event.target.id);
 
-    if (event.key === 'Enter') {
-        event.preventDefault();
-
+    if (event.type === 'input' || event.key === 'Backspace') {
         if (currentIndex >= 0) {
-            if (currentIndex === 8) {
-                currentArrayIndexx = currentArrayIndex;
-             
-               displayScaledScore();
-                reOrderRealItems();
-                clearInputs();
-                currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
-                inputs = inputArrays[currentArrayIndex];
-                
-                const nextElement = document.getElementById(inputs[0]);
-                if (nextElement) {
-                    nextElement.focus();
-                } else {
-                    console.error(`Element with ID ${inputs[0]} not found`);
+            if (event.key === 'Backspace' && event.target.value === '') {
+                if (currentIndex > 0) {
+                    const prevElement = document.getElementById(inputs[currentIndex - 1]);
+                    if (prevElement) {
+                        prevElement.focus();
+                    } else {
+                        console.error(`Element with ID ${inputs[currentIndex - 1]} not found`);
+                    }
                 }
             } else {
-                if (currentIndex < inputs.length - 1) {
-                    const nextElement = document.getElementById(inputs[currentIndex + 1]);
+                if (currentIndex === 8) {
+                    currentArrayIndexx = currentArrayIndex;
+
+                    displayScaledScore();
+                    reOrderRealItems();
+                    clearInputs();
+                    currentArrayIndex = (currentArrayIndex + 1) % inputArrays.length;
+                    inputs = inputArrays[currentArrayIndex];
+
+                    const nextElement = document.getElementById(inputs[0]);
                     if (nextElement) {
                         nextElement.focus();
                     } else {
-                        console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
+                        console.error(`Element with ID ${inputs[0]} not found`);
+                    }
+                } else {
+                    if (currentIndex < inputs.length - 1) {
+                        const nextElement = document.getElementById(inputs[currentIndex + 1]);
+                        if (nextElement) {
+                            nextElement.focus();
+                        } else {
+                            console.error(`Element with ID ${inputs[currentIndex + 1]} not found`);
+                        }
                     }
                 }
             }
         }
-    } else if (event.key === 'Backspace' && event.target.value === '') {
-        if (currentIndex > 0) {
-            const prevElement = document.getElementById(inputs[currentIndex - 1]);
-            if (prevElement) {
-                prevElement.focus();
-            } else {
-                console.error(`Element with ID ${inputs[currentIndex - 1]} not found`);
-            }
-        }
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
     function enableInputReal() {
@@ -387,168 +395,128 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const correctValuess = {
-    'ans1': '1',
-    'ans2': '2',
-    'ans3': '3',
-    'ans4': '4',
-    'ans5': '5',
-    'ans6': '6',
-    'ans7': '7',
-    'ans8': '8',
-    'ans9': '9'
-};
+            'ans1': '1',
+            'ans2': '2',
+            'ans3': '3',
+            'ans4': '4',
+            'ans5': '5',
+            'ans6': '6',
+            'ans7': '7',
+            'ans8': '8',
+            'ans9': '9'
+        };
 
-let score = 0;
+        let score = 0;
+        let timer;
+        let secondsRemaining = 120;
+        let isTimerRunning = false;
 
-function validateInputt(event) {
-    if (!isTimerRunning) {
-        console.log('Scoring is stopped as the timer has ended.');
-        return;
-    }
-}
+        function validateInputt(event) {
+            if (!isTimerRunning) {
+                console.log('Scoring is stopped as the timer has ended.');
+                document.querySelectorAll('input').forEach(input => {
+                    input.removeEventListener('input', validateInputt);
+                });
+                return;
+            }
 
-function validateInputt(event) {
-    const input = event.target;
-    const inputId = input.id;
-    const value = input.value;
+            const input = event.target;
+            const inputId = input.id;
+            const value = input.value;
 
-    if (inputId in correctValuess) {
-        if (value === correctValuess[inputId]) {
-            console.log(`${inputId} is correct`);
-            score++;
-        } else {
-            console.log(`${inputId} is incorrect`);
-            score--;
+            if (inputId in correctValuess) {
+                if (value === correctValuess[inputId]) {
+                    console.log(`${inputId} is correct`);
+                    score++;
+                } else {
+                    console.log(`${inputId} is incorrect`);
+                    score--;
+                }
+            }
+
+            displayScore();
+            displayScaledScore();
         }
-    }
 
-    displayScore();
-}
-
-function displayScore() {
-    const scoreElement = document.getElementById('scoreDisplay');
-    if (scoreElement) {
-        scoreElement.textContent = `Score: ${score}`;
-    } else {
-        console.error('Score element not found');
-    }
-}
-
-function startValidation() {
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', validateInputt);
-    });
-}
-
-document.getElementById('poop').addEventListener('click', startValidation);
-
-
-
-let timer;
-let secondsRemaining = 120;
-let isTimerRunning = false; 
-function updateTimerDisplay() {
-    const minutes = Math.floor(secondsRemaining / 60);
-    const seconds = secondsRemaining % 60;
-    const timerDisplay = document.getElementById('timerDisplay');
-
-    timerDisplay.textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-}
-
-function startTimer() {
-    const stfu = document.getElementById('timerDisplay');
-    stfu.classList.remove('invisible');
-    if (timer) {
-        clearInterval(timer);
-    }
-    isTimerRunning = true;
-    timer = setInterval(() => {
-        if (secondsRemaining > 0) {
-            secondsRemaining--;
-            updateTimerDisplay();
-        } else {
-            clearInterval(timer);
-            isTimerRunning = false;
-            console.log('Timer has ended');
+        function displayScore() {
+            const scoreElement = document.getElementById('scoreDisplay');
+            if (scoreElement) {
+                scoreElement.textContent = `Score: ${score}`;
+            } else {
+                console.error('Score element not found');
+            }
         }
-    }, 1000);
-}
 
-function stopTimer() {
-    clearInterval(timer);
-    isTimerRunning = false;
-    console.log('Timer stopped');
-}
+        function displayScaledScore() {
+            const sS = getScaledScore(score);
+            const sSElement = document.getElementById('ssDisplay');
+            if (sSElement) {
+                sSElement.textContent = `Scaled Score: ${sS}`;
+            } else {
+                console.error('ssDisplay element not found');
+            }
+        }
 
-document.getElementById('poop').addEventListener('click', startTimer);
+        function getScaledScore(score) {
+            if (score >= 0 && score <= 21) return 1;
+            if (score >= 23 && score <= 27) return 2;
+            if (score >= 28 && score <= 33) return 3;
+            if (score >= 34 && score <= 39) return 4;
+            if (score >= 40 && score <= 46) return 5;
+            if (score >= 47 && score <= 52) return 6;
+            if (score >= 53 && score <= 58) return 7;
+            if (score >= 59 && score <= 64) return 8;
+            if (score >= 65 && score <= 70) return 9;
+            if (score >= 71 && score <= 75) return 10;
+            if (score >= 76 && score <= 80) return 11;
+            if (score >= 81 && score <= 86) return 12;
+            if (score >= 87 && score <= 91) return 13;
+            if (score >= 92 && score <= 95) return 14;
+            if (score >= 96 && score <= 100) return 15;
+            if (score >= 101 && score <= 104) return 16;
+            if (score >= 105 && score <= 107) return 17;
+            if (score >= 108 && score <= 110) return 18;
+            if (score >= 111 && score <= 135) return 19;
+        }
 
-updateTimerDisplay();
+        function startValidation() {
+            isTimerRunning = true;
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', validateInputt);
+                input.setAttribute('autocomplete', 'off');
+            });
 
+            startTimer();
+        }
 
-function getScaledScore(score) {
-    if (score >= 0 && score <= 21) {
-        return 1;
-    } else if (score >= 23 && score <= 27) {
-        return 2;
-    }
-    else if (score >= 28 && score <= 33) {
-        return 3;
-    }
-    else if (score >= 34 && score <= 39) {
-        return 4;
-    }else if (score >= 40 && score <= 46) {
-        return 5;
-    }else if (score >= 47 && score <= 52) {
-        return 6;
-    }
-    else if (score >= 53 && score <= 58) {
-        return 7;
-    }else if (score >= 59 && score <= 64) {
-        return 8;
-    }else if (score >= 65 && score <= 70) {
-        return 9;
-    }else if (score >= 71 && score <= 75) {
-        return 10;
-    }else if (score >= 76 && score <= 80) {
-        return 11;
-    }else if (score >= 81 && score <= 86) {
-        return 12;
-    }else if (score >= 87 && score <= 91) {
-        return 13;
-    }else if (score >= 92 && score <= 95) {
-        return 14;
-    }else if (score >= 96 && score <= 10) {
-        return 15;
-    }
-    else if (score >= 101 && score <= 104) {
-        return 16;
-    }
-    else if (score >= 105 && score <= 107) {
-        return 17;
-    }
-    else if (score >= 108 && score <= 110) {
-        return 18;
-    }
-    else if (score >= 111 && score <= 135) {
-        return 19;
-    }
-}
+        function updateTimerDisplay() {
+            const minutes = Math.floor(secondsRemaining / 60);
+            const seconds = secondsRemaining % 60;
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
 
-function displayScaledScore() {
-    const sS = getScaledScore(score);
-    const sSElement = document.getElementById('ssDisplay');
-    if (sSElement) {
-        sSElement.textContent = `Scaled Score: ${sS}`;
-    } else {
-        console.error('ssDisplay element not found');
-    }
-}
- 
-displayScaledScore();
+        function startTimer() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.classList.remove('invisible');
+            if (timer) {
+                clearInterval(timer);
+            }
+            timer = setInterval(() => {
+                if (secondsRemaining > 0) {
+                    secondsRemaining--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timer);
+                    isTimerRunning = false;
+                    console.log('Timer has ended');
+                }
+            }, 1000);
+        }
 
-document.querySelectorAll('input').forEach(input => {
-    input.setAttribute('autocomplete', 'off');
-});
+        document.getElementById('poop').addEventListener('click', startValidation);
+
+        updateTimerDisplay();
 
 
     </script>
