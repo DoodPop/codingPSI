@@ -362,7 +362,7 @@ function reOrderRealItems() {
                     }    
                 }
             } else {
-                if (currentIndex === 8 && inputUser[8]){
+                if (currentIndex === 8 && inputUser[8] ){
 
                                  currentArrayIndexx = currentArrayIndex;
 
@@ -378,7 +378,8 @@ function reOrderRealItems() {
                     } else {
                         console.error(`Element with ID ${inputs[0]} not found`);
                     }
-                } else {
+                }
+                 else {
                     if (currentIndex < inputs.length - 1) {
                         const nextElement = document.getElementById(inputs[currentIndex + 1]);
                         if (nextElement) {
@@ -440,6 +441,11 @@ const correctValuess = {
             inputUser.push(value);
             console.log(inputUser);
 console.log(value);
+
+if (inputUser.length >= 10) {
+        inputUser = [];
+        console.log('inputUser has been reset.');
+    }
             if (inputId in correctValuess) {
                 if (value === correctValuess[inputId]) {
                     console.log(`${inputId} is correct`);
